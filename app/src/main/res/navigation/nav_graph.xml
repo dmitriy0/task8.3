@@ -12,16 +12,17 @@
         tools:layout="@layout/fragment_main" >
 
         <action
-            android:id="@+id/action_fragmentMain2_to_favouritesFragment"
-            app:destination="@id/favouritesFragment" />
+            android:id="@+id/action_fragmentMain2_to_fragmentFavourites"
+            app:destination="@id/fragmentFavourites" />
         <action
             android:id="@+id/action_fragmentMain_to_fragmentAbout"
             app:destination="@id/fragmentAbout" />
     </fragment>
     <fragment
-        android:id="@+id/favouritesFragment"
-        android:name="com.example.task83.FavouritesFragment"
-        android:label="FavouritesFragment" />
+        android:id="@+id/fragmentFavourites"
+        android:name="com.example.task83.FragmentFavourites"
+        android:label="FavouritesFragment"
+        tools:layout="@layout/fragment_favourites" />
     <fragment
         android:id="@+id/fragmentAbout"
         android:name="com.example.task83.FragmentAbout"

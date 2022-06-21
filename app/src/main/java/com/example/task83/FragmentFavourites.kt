@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task83.databinding.FragmentFavouritesBinding
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*
@@ -17,27 +18,32 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-class FavouritesFragment : Fragment() {
+class FragmentFavourites : Fragment() {
 
     private lateinit var data: ArrayList<Cat>
     private lateinit var adapter: Adapter
     private var dao: Dao? = null
     private val jsonFormat = Json { ignoreUnknownKeys = true }
+    private lateinit var binding: FragmentFavouritesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_favourites, container, false)
+    ): View {
+        binding = FragmentFavouritesBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         data = ArrayList<Cat>()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         adapter = Adapter(data)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
         val db: Database? = App.instance?.getDatabase()
         dao = db?.dao()
@@ -56,8 +62,7 @@ class FavouritesFragment : Fragment() {
                     App.instance?.needUpdateData = false
                     requestToApi()
                     requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "from api", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(requireContext(), "from api", Toast.LENGTH_LONG).show()
                     }
                 } else {
                     for (i in entityImages) {
@@ -73,7 +78,6 @@ class FavouritesFragment : Fragment() {
             }
         }
         thread.start()
-        return view
     }
 
     private fun requestToApi() {
@@ -86,10 +90,8 @@ class FavouritesFragment : Fragment() {
                 parameter("sub_id", "user_id")
             }
 
-
             val votes =
                 jsonFormat.decodeFromString<List<Vote>>(responseVotes)
-
 
             var counter = 0
             for (i in votes) {

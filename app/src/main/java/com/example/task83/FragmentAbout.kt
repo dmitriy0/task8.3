@@ -7,26 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
+import com.example.task83.databinding.FragmentAboutBinding
 
 
 class FragmentAbout : Fragment() {
 
+    private lateinit var binding: FragmentAboutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_about, container, false)
-        val main = view.findViewById<Button>(R.id.buttonMain)
-        main.setOnClickListener {
-            findNavController().navigate(R.id.fragmentMain)
+    ): View {
+        binding = FragmentAboutBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonMain.setOnClickListener {
+            findNavController().popBackStack(R.id.fragmentMain, false)
         }
-        return view
     }
 
 }

@@ -10,9 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Task83">
-        <activity
-            android:name="com.example.task83.ActivityFavourites"
-            android:exported="false" />
+
         <activity
             android:name="com.example.task83.MainActivity"
             android:exported="true">
