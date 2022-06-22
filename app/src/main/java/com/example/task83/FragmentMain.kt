@@ -66,7 +66,7 @@ class FragmentMain : Fragment() {
                         }
                         body = Json.encodeToString(Vote(imageId, "user_id", 1))
                     }
-                } catch(e: Exception) {
+                } catch (e: Exception) {
                     requireActivity().runOnUiThread {
                         Toast.makeText(
                             requireContext(),
@@ -78,7 +78,7 @@ class FragmentMain : Fragment() {
             }
             getRandomImage(client)
         }
-        
+
         binding.dislike.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
                 try {

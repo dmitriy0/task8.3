@@ -119,13 +119,7 @@ class FragmentFavourites : Fragment() {
                     }
                 }
             } catch (e: Exception) {
-                requireActivity().runOnUiThread {
-                    Toast.makeText(
-                        requireContext(),
-                        "something went wrong check your internet connection",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                
             }
         }
     }
