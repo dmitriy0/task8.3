@@ -83,38 +83,48 @@ class FragmentFavourites : Fragment() {
     private fun requestToApi() {
         val client = HttpClient(OkHttp)
         GlobalScope.launch(Dispatchers.IO) {
-            val responseVotes: String = client.get("https://api.thecatapi.com/v1/votes") {
-                headers {
-                    append("x-api-key", "e7e933f7-09f6-43e3-a68a-b8e30c70e434")
-                }
-                parameter("sub_id", "user_id")
-            }
-
-            val votes =
-                jsonFormat.decodeFromString<List<Vote>>(responseVotes)
-
-            var counter = 0
-            for (i in votes) {
-                if (i.value == 1) {
-                    val responseImage: String =
-                        client.get("https://api.thecatapi.com/v1/images/${i.image_id}") {
-                            headers {
-                                append("x-api-key", "e7e933f7-09f6-43e3-a68a-b8e30c70e434")
-                            }
-                        }
-                    val catImage =
-                        jsonFormat.decodeFromString<Cat>(responseImage)
-                    data.add(catImage)
-
-                    val entityImage = EntityImages()
-                    entityImage.id = counter
-                    entityImage.imageCat = responseImage
-                    dao!!.insert(entityImage)
-                    counter += 1
-
-                    requireActivity().runOnUiThread {
-                        adapter.notifyItemInserted(data.size - 1)
+            try {
+                val responseVotes: String = client.get("https://api.thecatapi.com/v1/votes") {
+                    headers {
+                        append("x-api-key", "e7e933f7-09f6-43e3-a68a-b8e30c70e434")
                     }
+                    parameter("sub_id", "user_id")
+                }
+
+                val votes =
+                    jsonFormat.decodeFromString<List<Vote>>(responseVotes)
+
+                var counter = 0
+                for (i in votes) {
+                    if (i.value == 1) {
+                        val responseImage: String =
+                            client.get("https://api.thecatapi.com/v1/images/${i.image_id}") {
+                                headers {
+                                    append("x-api-key", "e7e933f7-09f6-43e3-a68a-b8e30c70e434")
+                                }
+                            }
+                        val catImage =
+                            jsonFormat.decodeFromString<Cat>(responseImage)
+                        data.add(catImage)
+
+                        val entityImage = EntityImages()
+                        entityImage.id = counter
+                        entityImage.imageCat = responseImage
+                        dao!!.insert(entityImage)
+                        counter += 1
+
+                        requireActivity().runOnUiThread {
+                            adapter.notifyItemInserted(data.size - 1)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                requireActivity().runOnUiThread {
+                    Toast.makeText(
+                        requireContext(),
+                        "something went wrong check your internet connection",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

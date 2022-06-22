@@ -78,7 +78,7 @@ class FragmentMain : Fragment() {
             }
             getRandomImage(client)
         }
-
+        
         binding.dislike.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
